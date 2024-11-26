@@ -4,7 +4,7 @@
 Implementiert in `server.py` und `client.py`.
 
 #### 3.1 Lokale Kommunikation mit WireShark
-|Time     |Scr Prt|Dst Port|Info      |Script|Befehl   |blockierender Befehl|
+|Time     |Source Port|Destination Port|Info      |Script|Befehl   |blockierender Befehl|
 |:--------|:------|:-------|:---------|:-----|:--------|:-------------------|
 |4.141010 |63671  |12345   |[SYN]     |Client|`connect`|`accept`            |
 |4.141019 |12345  |63671   |[SYN, ACK]|Server|`accept` |`connect`           |
