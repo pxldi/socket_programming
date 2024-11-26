@@ -62,3 +62,8 @@ socket.setdefaulttimeout(30)  # 30 Sekunden
 
 Ja, es ist möglich TCP und UDP auf dem gleichen Port zu verwenden, da es separate Protokolle sind. 
 Wichtig ist die Verwendung von `SO_REUSEADDR`.
+
+#### 3.3 Multithreaded Server
+
+Funktion listen() implementiert in `start_tcp_server()` in `server.py`, `receive()` implementiert in `handle_tcp_client()`.
+
