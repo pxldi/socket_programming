@@ -24,31 +24,24 @@ class CalculationServer:
             raise ValueError(f"Unknown operation: {operation}")
 
     def process_request(self, data):
-        # Unpack ID (unsigned int, 4 bytes)
         task_id = struct.unpack('!I', data[:4])[0]
         
-        # Get operation (UTF-8 string, 3 bytes)
         operation = data[4:7]
         
-        # Unpack N (unsigned char, 1 byte)
         n = struct.unpack('!B', data[7:8])[0]
         
-        # Unpack numbers (signed int, 4 bytes each)
         numbers = []
         for i in range(n):
             start = 8 + i * 4
             num = struct.unpack('!i', data[start:start + 4])[0]
             numbers.append(num)
             
-        # Calculate result
         result = self.calculate(operation, numbers)
         
-        # Pack response
         return struct.pack('!Ii', task_id, result)
 
     def handle_tcp_client(self, client_socket):
         try:
-            # Receive length of incoming data first (4 bytes for length)
             length_data = client_socket.recv(4)
             if not length_data:
                 return
@@ -57,8 +50,7 @@ class CalculationServer:
             data = client_socket.recv(length)
             
             response = self.process_request(data)
-            
-            # Send response length followed by response
+
             client_socket.send(struct.pack('!I', len(response)))
             client_socket.send(response)
         finally:
@@ -91,9 +83,11 @@ class CalculationServer:
             udp_socket.sendto(response, addr)
 
     def start(self):
-        # Start TCP and UDP servers in separate threads
         tcp_thread = threading.Thread(target=self.start_tcp_server)
         udp_thread = threading.Thread(target=self.start_udp_server)
         
         tcp_thread.start()
         udp_thread.start()
+
+server = CalculationServer()
+server.start()
